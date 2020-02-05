@@ -19,3 +19,4 @@ vendor/
 grun/
 piper/aparser/
 .vscode/
+*.pyc
