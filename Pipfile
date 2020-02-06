@@ -9,7 +9,6 @@ autopep8 = "*"
 [packages]
 requests = "*"
 antlr4-python3-runtime = "*"
-ipdb = "*"
 pudb = "*"
 
 [requires]
