@@ -1,0 +1,13 @@
+import "asd.er"  
+import "asd.erf"  
+
+@someVariable = {{ @rer > tr "r" "R" }}
+
+[sdfsdf] /* a comment */
+GET sdfsdf{{@asdd > dsflkj | qwewqe | qwe}}sdfsdf
+Authrization rewr
+sdfdsf {{asd.Request > dsflkj}}
+
+{
+    asd: 3
+}

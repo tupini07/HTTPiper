@@ -5,7 +5,6 @@ name = "HTTPiper"
 version = "0.1.0"
 dependencies = [
  "pest",
- "pest_consume",
  "pest_derive",
 ]
 
@@ -88,30 +87,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "pest_consume"
-version = "1.0.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c753ea5257c3905465fcd50a6685ad19e61e9e1a20c12312a9bef866ebba8a7e"
-dependencies = [
- "pest",
- "pest_consume_macros",
- "pest_derive",
- "proc-macro-hack",
-]
-
-[[package]]
-name = "pest_consume_macros"
-version = "1.0.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "98d85bc534f0754551bb493d0a7f37fca7c7d1e1a86b99453ca7e3ccb6989389"
-dependencies = [
- "proc-macro-hack",
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
 name = "pest_derive"
 version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -143,17 +118,6 @@ dependencies = [
  "maplit",
  "pest",
  "sha-1",
-]
-
-[[package]]
-name = "proc-macro-hack"
-version = "0.5.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ecd45702f76d6d3c75a80564378ae228a85f0b59d2f3ed43c91b4a69eb2ebfc5"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]

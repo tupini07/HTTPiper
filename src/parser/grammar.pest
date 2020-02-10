@@ -30,12 +30,12 @@ text = { (ASCII_ALPHA | " " | "?" | "&" | "=")+ }
 
 method = {"GET" | "POST" | "PATCH"}
 
-substitution = { "{{" ~ (reqAttribute | variable_id | empty) ~ ">" ~ pipes ~ "}}" }
+substitution = { "{{" ~ (empty | variable_id | reqAttribute) ~ ">" ~ pipes ~ "}}" }
 empty = {"''"}
-reqAttribute = {request_id ~ "." ~ req_resp}
+reqAttribute = {!"@" ~ request_id ~ "." ~ req_resp}
 req_resp = {"Request" | "Response"} 
 pipes = {command ~ ("|" ~ command)*}
-command = {word+}
+command = {(word | "\"" | "'")+}
 
 request_id = @{ASCII_ALPHA_LOWER ~ ASCII_ALPHA*}
 variable_id = @{"@" ~ ASCII_ALPHA+}
