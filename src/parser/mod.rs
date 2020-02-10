@@ -100,8 +100,20 @@ pub fn parse_file<'b>(file_name: &str) -> Result<(), Error<Rule>> {
 
 #[cfg(test)]
 mod tests {
-    use crate::parser;
+    use super::*;
 
     #[test]
-    fn test_method_parse() {}
+    fn can_parse_test_file() {
+        let unparsed_file = fs::read_to_string("src/parser/test.httpp").expect("cannot read file");
+
+        let mut program: Pair = HttppParser::parse(Rule::program, &unparsed_file)
+            .unwrap()
+            .next()
+            .unwrap();
+
+        let collected = program 
+            .into_inner()
+            .map(|p: Pair| format!("{:?}", p.as_rule()))
+            .collect::<Vec<String>>();
+    }
 }
