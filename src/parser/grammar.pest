@@ -1,0 +1,60 @@
+// [sdfsdf]
+// GET sdfsdf{{asd.Request > dsflkj | qwewqe | qwe}}sdfsdf
+// Authrization rewr
+// sdfdsf {{asd.Request > dsflkj}}
+
+// {
+//     asd: 3
+// }
+
+request_signature = {(request_name_container ~ NEWLINE)? ~ 
+					method ~ url ~ 
+                    (NEWLINE ~ headers)? ~  
+                    (NEWLINE{2} ~ body)? ~ 
+                    (NEWLINE+ | EOI)}
+
+headers = { header ~ (NEWLINE ~ header)* }
+header = { key ~ value }
+
+body = {json}
+
+key = @{key_value_char+}
+value = {(key_value_char | substitutable_value)+}
+
+url = {substitutable_value}
+request_name_container = _{"[" ~ request_id ~ "]"}
+
+text = { (ASCII_ALPHA | " " | "?" | "&" | "=")+ }
+
+method = {"GET" | "POST" | "PATCH"}
+
+substitution = { "{{" ~ (reqAttribute | variable_id | empty) ~ ">" ~ pipes ~ "}}" }
+empty = {"''"}
+reqAttribute = {request_id ~ "." ~ req_resp}
+req_resp = {"Request" | "Response"} 
+pipes = {command ~ ("|" ~ command)*}
+command = {word+}
+
+request_id = @{ASCII_ALPHA_LOWER ~ ASCII_ALPHA*}
+variable_id = @{"@" ~ ASCII_ALPHA+}
+
+
+// json/body specific rules
+jsonpair = { key ~ ":" ~ jsonvalues_possibilities }
+jsonobject = {"{" ~ NEWLINE* ~ "}" | 
+			  "{" ~ NEWLINE* ~ jsonpair ~ ("," ~ NEWLINE* ~ jsonpair)* ~ NEWLINE* ~ "}"}
+jsonarray = {"[" ~ NEWLINE* ~ "]" | 
+			 "[" ~ NEWLINE* ~ jsonvalues_possibilities ~ ("," ~ NEWLINE* ~ jsonvalues_possibilities)* ~ NEWLINE* ~ "]"}
+
+
+// below are non-printable rules
+WHITESPACE = _{ " " | "\t" }
+COMMENT = _{ "/*" ~ (!"*/" ~ ANY)* ~ "*/" }
+
+substitutable_value = _{(substitution | text)+}
+word = _{ASCII_ALPHA+}
+key_value_char = _{ ASCII_ALPHA 
+                    | ASCII_DIGIT 
+                    | "_" | "-" | "?" | "&" | "=" }
+json = _{jsonobject | jsonarray}
+jsonvalues_possibilities = _{jsonobject | jsonarray | value}

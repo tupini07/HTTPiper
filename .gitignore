@@ -14,10 +14,8 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 .antlr
-parser
 vendor/
 grun/
-piper/aparser/
 .vscode/
 *.pyc
 __pycache__
