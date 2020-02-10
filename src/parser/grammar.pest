@@ -1,13 +1,15 @@
-// [sdfsdf]
-// GET sdfsdf{{asd.Request > dsflkj | qwewqe | qwe}}sdfsdf
-// Authrization rewr
-// sdfdsf {{asd.Request > dsflkj}}
+// program
+program = { SOI ~ (import  | var_assignment | request_signature | NEWLINE)+ ~ EOI}
 
-// {
-//     asd: 3
-// }
+// rules for assignments
+var_assignment = { variable_id ~ "=" ~ value }
 
-request_signature = {(request_name_container ~ NEWLINE)? ~ 
+// rules for import
+import = ${"import" ~ WHITESPACE+ ~ "\"" ~ filename ~ "\""}
+filename = { (ASCII_ALPHA | ASCII_DIGIT)+ ~ "." ~ (ASCII_ALPHA | ASCII_DIGIT)+ }
+
+// rules for request definition
+request_signature = {(requestId ~ NEWLINE)? ~ 
 					method ~ url ~ 
                     (NEWLINE ~ headers)? ~  
                     (NEWLINE{2} ~ body)? ~ 
@@ -22,7 +24,7 @@ key = @{key_value_char+}
 value = {(key_value_char | substitutable_value)+}
 
 url = {substitutable_value}
-request_name_container = _{"[" ~ request_id ~ "]"}
+requestId = _{"[" ~ request_id ~ "]"}
 
 text = { (ASCII_ALPHA | " " | "?" | "&" | "=")+ }
 
