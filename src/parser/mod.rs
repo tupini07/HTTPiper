@@ -5,32 +5,62 @@ use std::fs;
 type Pair<'a> = pest::iterators::Pair<'a, Rule>;
 type Pairs<'a> = pest::iterators::Pairs<'a, Rule>;
 
-pub enum ProgramStatement {
+type Program = Vec<ProgramStatements>;
+
+pub enum RequestResponse {
+    Request,
+    Response,
+}
+
+pub enum RequestParts {
+    Body,
+    Headers,
+}
+
+pub enum SubstitutionParts {
+    Empty,
+    VariableReference(String),
+    NoSubtitution(String),
+    RequestReference {
+        requestName: String,
+        reqResp: RequestResponse,
+        part: RequestParts,
+    },
+}
+
+pub struct SubstitutionDetails {
+    root: SubstitutionParts,
+    commands: Vec<String>,
+}
+
+pub enum SubstitutionContentParts {
+    NoSobstitution(String),
+    Substitution(SubstitutionDetails),
+}
+
+type SubstitutionableContent = Vec<SubstitutionContentParts>;
+
+pub enum ProgramStatements {
     ImportFileName(String),
     VariableAssignment {
-        name: String, value: // how to substitution here?
-    }
+        name: String,
+        value: SubstitutionableContent,
+    },
+    RequestDefinition(RequestDefinition),
 }
 
-pub struct Program {
-    imports: Vec<ImportStatement>, 
-    requests
-}
-
-pub struct ImportStatement {
-    filename: String
-}
-
-pub struct VariableAssignment {
-
+pub struct KeyPair {
+    key: String,
+    value: SubstitutionableContent,
 }
 
 pub struct RequestDefinition {
-    name: 
+    requestName: String,
+    method: String,
+    url: SubstitutionableContent,
+    headers: Vec<KeyPair>,
+    body: Vec<KeyPair>,
 }
-
-
-
 
 #[derive(Parser)]
 #[grammar = "parser/grammar.pest"]
@@ -44,21 +74,18 @@ fn print_type_of<T>(_: &T) {
     println!("{}", std::any::type_name::<T>())
 }
 
-pub fn parse_file<'b>(file_name: &str) -> Result<HTTTPProgram, Error<Rule>> {
+pub fn parse_file<'b>(file_name: &str) -> Result<(), Error<Rule>> {
     let unparsed_file = fs::read_to_string(file_name).expect("cannot read file");
 
-    let mut results: Vec<HTTPPTokens<'b>> = Vec::new();
+    let mut parsed: Pairs = HttppParser::parse(Rule::program, &unparsed_file)?;
 
-    let mut parsed = HttppParser::parse(Rule::program, file)?.next().unwrap();
+    let inpu1 = parsed.next().unwrap();
 
-    let input = parsed.next().unwrap();
-
-    match input.as_rule() {
-        Rule::method => asdw(&input),
-        _ => unreachable!(),
-    }
-
-    results
+    // match input.as_rule() {
+    //     Rule::method => asdw(&input),
+    //     _ => unreachable!(),
+    // };
+    Ok(())
 }
 
 #[cfg(test)]

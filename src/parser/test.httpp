@@ -4,9 +4,9 @@ import "asd.erf"
 @someVariable = {{ @rer > tr "r" "R" }}
 
 [sdfsdf] /* a comment */
-GET sdfsdf{{@asdd > dsflkj | qwewqe | qwe}}sdfsdf
+GET sdfsdf{{wer.Request.Body > dsflkj | qwewqe | qwe}}sdfsdf
 Authrization rewr
-sdfdsf {{asd.Request > dsflkj}}
+sdfdsf {{asd.Request.Headers}}
 
 {
     asd: 3
