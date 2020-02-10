@@ -83,14 +83,18 @@ fn print_type_of<T>(_: &T) {
 pub fn parse_file<'b>(file_name: &str) -> Result<(), Error<Rule>> {
     let unparsed_file = fs::read_to_string(file_name).expect("cannot read file");
 
-    let mut parsed: Pairs = HttppParser::parse(Rule::program, &unparsed_file)?;
+    let mut program: Pair = HttppParser::parse(Rule::program, &unparsed_file)?
+        .next()
+        .unwrap();
 
-    let inpu1 = parsed.next().unwrap();
+    println!(
+        "{:?}",
+        program
+            .into_inner()
+            .map(|p: Pair| format!("{:?}", p.as_rule()))
+            .collect::<Vec<String>>()
+    );
 
-    // match input.as_rule() {
-    //     Rule::method => asdw(&input),
-    //     _ => unreachable!(),
-    // };
     Ok(())
 }
 
