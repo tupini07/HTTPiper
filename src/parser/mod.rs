@@ -6,6 +6,7 @@ type Pair<'a> = pest::iterators::Pair<'a, Rule>;
 type Pairs<'a> = pest::iterators::Pairs<'a, Rule>;
 
 type Program = Vec<ProgramStatements>;
+type SubstitutionableContent = Vec<SubstitutionContentParts>;
 
 pub enum RequestResponse {
     Request,
@@ -37,8 +38,6 @@ pub enum SubstitutionContentParts {
     NoSobstitution(String),
     Substitution(SubstitutionDetails),
 }
-
-type SubstitutionableContent = Vec<SubstitutionContentParts>;
 
 pub enum ProgramStatements {
     ImportFileName(String),
@@ -111,7 +110,7 @@ mod tests {
             .next()
             .unwrap();
 
-        let collected = program 
+        let collected = program
             .into_inner()
             .map(|p: Pair| format!("{:?}", p.as_rule()))
             .collect::<Vec<String>>();
