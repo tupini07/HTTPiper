@@ -22,8 +22,8 @@ pub enum SubstitutionParts {
     VariableReference(String),
     NoSubtitution(String),
     RequestReference {
-        requestName: String,
-        reqResp: RequestResponse,
+        name: String,
+        req_resp: RequestResponse,
         part: RequestParts,
     },
 }
@@ -49,17 +49,23 @@ pub enum ProgramStatements {
     RequestDefinition(RequestDefinition),
 }
 
-pub struct KeyPair {
+pub struct SingleHeader {
     key: String,
     value: SubstitutionableContent,
 }
 
+pub enum BodyValues {
+    Array(Vec<BodyValues>),
+    Object(Vec<(String, BodyValues)>),
+    Terminal(SubstitutionableContent),
+}
+
 pub struct RequestDefinition {
-    requestName: String,
+    name: String,
     method: String,
     url: SubstitutionableContent,
-    headers: Vec<KeyPair>,
-    body: Vec<KeyPair>,
+    headers: Vec<SingleHeader>,
+    body: BodyValues,
 }
 
 #[derive(Parser)]
