@@ -14,7 +14,7 @@ pub enum RequestParts {
 }
 
 #[derive(Debug)]
-pub enum SubstitutionParts {
+pub enum SubstitutionRoot {
     Empty,
     VariableReference(String),
     NoSubtitution(String),
@@ -27,8 +27,8 @@ pub enum SubstitutionParts {
 
 #[derive(Debug)]
 pub struct SubstitutionDetails {
-    root: SubstitutionParts,
-    commands: Vec<String>,
+    pub root: SubstitutionRoot,
+    pub commands: Vec<String>,
 }
 
 #[derive(Debug)]
@@ -49,8 +49,8 @@ pub enum ProgramStatement {
 
 #[derive(Debug)]
 pub struct SingleHeader {
-    key: String,
-    value: SubstitutionableContent,
+    pub key: String,
+    pub value: SubstitutionableContent,
 }
 
 #[derive(Debug)]
@@ -62,9 +62,9 @@ pub enum BodyValues {
 
 #[derive(Debug)]
 pub struct RequestDefinition {
-    name: String,
-    method: String,
-    url: SubstitutionableContent,
-    headers: Vec<SingleHeader>,
-    body: BodyValues,
+    pub name: String,
+    pub method: String,
+    pub url: SubstitutionableContent,
+    pub headers: Vec<SingleHeader>,
+    pub body: BodyValues,
 }
