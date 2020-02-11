@@ -21,7 +21,7 @@ header = { key ~ value }
 body = {json}
 
 key = @{key_value_char+}
-value = {(key_value_char | substitutable_value)+}
+value = {(key | substitutable_value)+}
 
 url = {substitutable_value}
 requestId = _{"[" ~ request_id ~ "]"}
