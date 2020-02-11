@@ -1,7 +1,12 @@
 import "asd.er"  
 import "asd.erf"  
 
-@someVariable = {{ @rer > tr "r" "R" }}
+@asdw = {{@fm > cat | grep -o | wg}}
+
+@someVariable = sdfsdf{{@fd}}sdfwe{{ @rer > tr "r" "R" }}
+
+@someVariabledf = {{asd.Request.Headers}}sdfwe{{ @rer > tr "r" "R" }}
+@someVareeeiabledf = {{''}}sdfwe{{ '' > tr "r" "R" }}
 
 [sdfsdf] /* a comment */
 GET sdfsdf{{wer.Request.Body > dsflkj | qwewqe | qwe}}sdfsdf
