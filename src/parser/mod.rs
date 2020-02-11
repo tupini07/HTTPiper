@@ -20,7 +20,6 @@ fn print_type_of<T>(_: &T) {
 
 pub fn parse_file<'b>(file_name: &str) -> Result<(), Error<Rule>> {
     let unparsed_file = fs::read_to_string(file_name).expect("cannot read file");
-
     let mut program: Pair = HttppParser::parse(Rule::program, &unparsed_file)?
         .next()
         .unwrap();
@@ -35,7 +34,8 @@ pub fn parse_file<'b>(file_name: &str) -> Result<(), Error<Rule>> {
 
     for x in program.into_inner() {
         match x.as_rule() {
-            Rule::import => println!("{:?}", pr::parse_import(x)),
+            Rule::import => (), // println!("{:?}", pr::parse_import(x)),
+            Rule::var_assignment => println!("{:?}", pr::parse_variable_assignment(x)),
             _ => println!("----"),
         }
     }
