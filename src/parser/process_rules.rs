@@ -108,17 +108,23 @@ mod tests {
     use super::*;
     use test_case::test_case;
 
+    fn parse<'a>(input: &'a str, rule: Rule) -> Pair<'a> {
+        HttppParser::parse(rule, input).unwrap().next().unwrap()
+    }
+
+    #[test]
+    fn parsing_value() {
+        let value_statement = format!("{}", "{{@fm > cat | grep -o | wg}}");
+        let value_pair: Pair = parse(&value_statement, Rule::value);
+    }
+
     #[test_case("@sdfRfrrr", "ewoirjwer")]
     #[test_case("@s", "ewsd{{ @ds > cat | mop }}ei")]
     #[test_case("@sfei", "{{ @ds > cat | mop }}")]
     fn parsing_var_assignment(var_name: &str, var_value: &str) {
         let var_assignment_statement = format!("{} = {}", var_name, var_value);
 
-        let var_assignment: Pair =
-            HttppParser::parse(Rule::var_assignment, &var_assignment_statement)
-                .unwrap()
-                .next()
-                .unwrap();
+        let var_assignment: Pair = parse(&var_assignment_statement, Rule::var_assignment);
 
         let processed: e::ProgramStatement = parse_variable_assignment(var_assignment);
         match processed {
@@ -136,10 +142,7 @@ mod tests {
     fn parsing_import(desired_fn: &str) {
         let import_statement = format!("import \"{}\"", desired_fn);
 
-        let import: Pair = HttppParser::parse(Rule::import, &import_statement)
-            .unwrap()
-            .next()
-            .unwrap();
+        let import: Pair = parse(&import_statement, Rule::import);
 
         let processed: e::ProgramStatement = parse_import(import);
         if let e::ProgramStatement::ImportFileName(fname) = processed {
