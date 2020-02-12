@@ -75,6 +75,8 @@ pub fn parse_substitution(input: Pair) -> e::SubstitutionDetails {
 }
 
 pub fn parse_value(input: Pair) -> e::SubstitutionableContent {
+    debug_assert_eq!(input.as_rule(), Rule::value);
+
     use e::SubstitutionContentParts::*;
 
     input
