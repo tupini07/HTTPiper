@@ -108,6 +108,28 @@ mod tests {
     use super::*;
     use test_case::test_case;
 
+    #[test_case("@sdfRfrrr", "ewoirjwer")]
+    #[test_case("@s", "ewsd{{ @ds > cat | mop }}ei")]
+    #[test_case("@sfei", "{{ @ds > cat | mop }}")]
+    fn parsing_var_assignment(var_name: &str, var_value: &str) {
+        let var_assignment_statement = format!("{} = {}", var_name, var_value);
+
+        let var_assignment: Pair =
+            HttppParser::parse(Rule::var_assignment, &var_assignment_statement)
+                .unwrap()
+                .next()
+                .unwrap();
+
+        let processed: e::ProgramStatement = parse_variable_assignment(var_assignment);
+        match processed {
+            e::ProgramStatement::VariableAssignment { name, value } => {
+                assert_eq!(name, var_name);
+                assert!(value.len() > 0);
+            }
+            _ => panic!("No variable assignment was extracted!"),
+        }
+    }
+
     #[test_case("asd.txt")]
     #[test_case("weoirj.e39")]
     #[test_case("32.e")]
