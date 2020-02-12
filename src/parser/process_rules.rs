@@ -47,7 +47,6 @@ pub fn parse_substitution(input: Pair) -> e::SubstitutionDetails {
     let mut pairs = input.into_inner();
 
     let root_pair = pairs.next().unwrap();
-    println!("||| {:?}", root_pair);
 
     let root = match root_pair.as_rule() {
         Rule::variable_id => e::SubstitutionRoot::VariableReference(root_pair.as_str().to_owned()),
@@ -56,13 +55,22 @@ pub fn parse_substitution(input: Pair) -> e::SubstitutionDetails {
         _ => unreachable!(),
     };
 
-    let mut commands: Vec<String> = vec![];
+    let mut commands_vec: Vec<String> = vec![];
 
-    // TODO one push into commands for each actual command (if any)
+    if let Some(commands) = pairs.next() {
+        let command_pairs: Pairs = commands.into_inner();
+
+        commands_vec.append(
+            command_pairs
+                .map(|p: Pair| p.as_str().trim().to_owned())
+                .collect::<Vec<String>>()
+                .as_mut(),
+        );
+    }
 
     e::SubstitutionDetails {
         root: root,
-        commands: commands,
+        commands: commands_vec,
     }
 }
 
