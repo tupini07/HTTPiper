@@ -116,6 +116,22 @@ mod tests {
     fn parsing_value() {
         let value_statement = format!("{}", "{{@fm > cat | grep -o | wg}}");
         let value_pair: Pair = parse(&value_statement, Rule::value);
+
+        let processed = parse_value(value_pair);
+        assert!(processed.len() > 0);
+
+        let subst = processed.get(0).unwrap();
+        match subst {
+            e::SubstitutionContentParts::Substitution(details) => {
+                assert!(
+                    details.commands.len() == 3,
+                    "Expected example to have three commands"
+                );
+            }
+            e::SubstitutionContentParts::NoSobstitution(_) => {
+                panic!("This should actually be a substitution!")
+            }
+        };
     }
 
     #[test_case("@sdfRfrrr", "ewoirjwer")]
@@ -129,8 +145,14 @@ mod tests {
         let processed: e::ProgramStatement = parse_variable_assignment(var_assignment);
         match processed {
             e::ProgramStatement::VariableAssignment { name, value } => {
-                assert_eq!(name, var_name);
-                assert!(value.len() > 0);
+                assert_eq!(
+                    name, var_name,
+                    "Expected extracted variable name to be the same as the provided one"
+                );
+                assert!(
+                    value.len() > 0,
+                    "Expected the parser to extract at least one value."
+                );
             }
             _ => panic!("No variable assignment was extracted!"),
         }
