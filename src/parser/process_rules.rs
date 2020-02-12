@@ -92,23 +92,15 @@ pub fn parse_value(input: Pair) -> e::SubstitutionableContent {
 pub fn parse_variable_assignment(input: Pair) -> e::ProgramStatement {
     debug_assert_eq!(input.as_rule(), Rule::var_assignment);
 
-    let inner: Pairs = input.into_inner();
+    let mut inner: Pairs = input.into_inner();
 
-    let mut name: String;
-    let mut value: String;
-    for p in inner {
-        match p.as_rule() {
-            Rule::variable_id => {
-                name = p.as_str().to_owned();
-            }
-            Rule::value => {
-                parse_value(p);
-            }
-            _ => unreachable!(),
-        }
+    let name = inner.next().unwrap().as_str().to_owned();
+    let value = parse_value(inner.next().unwrap());
+
+    e::ProgramStatement::VariableAssignment {
+        name: name,
+        value: value,
     }
-    name = "qwewqe".to_owned();
-    e::ProgramStatement::ImportFileName("asdasd".to_owned())
 }
 
 #[cfg(test)]
