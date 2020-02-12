@@ -1,3 +1,6 @@
+default:
+	echo 'Hello, world!'
+
 watch:
 	cargo watch -x check -x test
 
