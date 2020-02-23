@@ -113,7 +113,7 @@ mod tests {
     }
 
     #[test]
-    fn parsing_value() {
+    fn parsing_value_with_substitution() {
         let value_statement = format!("{}", "{{@fm > cat | grep -o | wg}}");
         let value_pair: Pair = parse(&value_statement, Rule::value);
 
@@ -123,8 +123,8 @@ mod tests {
         let subst = processed.get(0).unwrap();
         match subst {
             e::SubstitutionContentParts::Substitution(details) => {
-                assert!(
-                    details.commands.len() == 3,
+                assert_eq!(
+                    details.commands.len(), 3,
                     "Expected example to have three commands"
                 );
             }
