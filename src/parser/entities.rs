@@ -1,19 +1,19 @@
 pub type Program = Vec<ProgramStatement>;
 pub type SubstitutionableContent = Vec<SubstitutionContentParts>;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum RequestResponse {
     Request,
     Response,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum RequestParts {
     Body,
     Headers,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum SubstitutionRoot {
     Empty,
     VariableReference(String),

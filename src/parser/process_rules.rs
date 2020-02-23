@@ -106,6 +106,7 @@ pub fn parse_variable_assignment(input: Pair) -> e::ProgramStatement {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::parser::entities::SubstitutionRoot;
     use test_case::test_case;
 
     fn parse<'a>(input: &'a str, rule: Rule) -> Pair<'a> {
@@ -113,20 +114,28 @@ mod tests {
     }
 
     #[test]
-    fn parsing_value_with_substitution() {
-        let value_statement = format!("{}", "{{@fm > cat | grep -o | wg}}");
+    fn parsing_value_with_only_substitution_and_three_commands() {
+        let value_statement = format!("{}", "{{@fm > cat | grep -o | wc}}");
         let value_pair: Pair = parse(&value_statement, Rule::value);
 
         let processed = parse_value(value_pair);
-        assert!(processed.len() > 0);
+        assert_eq!(processed.len(), 1, "There should be exactly one part in this SubstitutionableContent");
 
-        let subst = processed.get(0).unwrap();
-        match subst {
+        match &processed[0] {
             e::SubstitutionContentParts::Substitution(details) => {
                 assert_eq!(
-                    details.commands.len(), 3,
+                    details.root,
+                    SubstitutionRoot::VariableReference("@fm".to_string())
+                );
+
+                assert_eq!(
+                    details.commands.len(),
+                    3,
                     "Expected example to have three commands"
                 );
+                assert_eq!(details.commands[0], "cat".to_string());
+                assert_eq!(details.commands[1], "grep -o".to_string());
+                assert_eq!(details.commands[2], "wc".to_string());
             }
             e::SubstitutionContentParts::NoSobstitution(_) => {
                 panic!("This should actually be a substitution!")
