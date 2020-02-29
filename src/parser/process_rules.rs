@@ -104,14 +104,17 @@ pub fn parse_variable_assignment(input: Pair) -> e::ProgramStatement {
 }
 
 pub fn parse_request(input: Pair) -> e::RequestDefinition {
-    unimplemented!()
+    debug_assert_eq!(input.as_rule(), Rule::request_signature);
+    unimplemented!();
 }
 
 pub fn parse_request_headers(input: Pair) -> Vec<e::SingleHeader> {
+    debug_assert_eq!(input.as_rule(), Rule::headers);
     unimplemented!()
 }
 
-pub fn parse_request_body(input: Pait) -> e::BodyValues {
+pub fn parse_request_body(input: Pair) -> e::BodyValues {
+    debug_assert_eq!(input.as_rule(), Rule::body);
     unimplemented!()
 }
 
@@ -126,21 +129,6 @@ mod tests {
     }
 
     #[test]
-    fn parse_request() {
-        unimplemented!()
-    }
-
-    #[test]
-    fn parse_request_headers() {
-        unimplemented!()
-    }
-
-    #[test]
-    fn parse_request_body() {
-        unimplemented!()
-    }
-
-    #[test]
     fn parse_value_with_no_substitution() {
         unimplemented!()
     }
@@ -152,7 +140,33 @@ mod tests {
 
     #[test]
     fn parse_value_with_substitution_no_commands() {
-        unimplemented!()
+        let value_statement = format!("{}", "{{@varname}}");
+        let value_pair: Pair = parse(&value_statement, Rule::value);
+
+        let processed = parse_value(value_pair);
+        assert_eq!(
+            processed.len(),
+            1,
+            "There should be exactly one part in this SubstitutionableContent"
+        );
+
+        match &processed[0] {
+            e::SubstitutionContentParts::Substitution(details) => {
+                assert_eq!(
+                    details.root,
+                    SubstitutionRoot::VariableReference("@varname".to_string())
+                );
+
+                assert_eq!(
+                    details.commands.len(),
+                    0,
+                    "Expected example to have zero commands"
+                );
+            }
+            e::SubstitutionContentParts::NoSobstitution(_) => {
+                panic!("This should actually be a substitution!")
+            }
+        };
     }
 
     #[test]
@@ -187,6 +201,21 @@ mod tests {
                 panic!("This should actually be a substitution!")
             }
         };
+    }
+
+    #[test]
+    fn parse_request() {
+        unimplemented!()
+    }
+
+    #[test]
+    fn parse_request_headers() {
+        unimplemented!()
+    }
+
+    #[test]
+    fn parse_request_body() {
+        unimplemented!()
     }
 
     #[test_case("@sdfRfrrr", "ewoirjwer")]
