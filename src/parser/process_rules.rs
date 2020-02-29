@@ -2,6 +2,10 @@ use crate::parser::entities as e;
 use crate::parser::*;
 use std::fs;
 
+pub fn parse_program(input: Pairs) -> e::Program {
+    unimplemented!()
+}
+
 pub fn parse_import(input: Pair) -> e::ProgramStatement {
     debug_assert_eq!(input.as_rule(), Rule::import);
 
@@ -170,7 +174,7 @@ mod tests {
     }
 
     #[test]
-    fn parsing_value_with_substitution_and_three_commands() {
+    fn parse_value_with_substitution_and_three_commands() {
         let value_statement = format!("{}", "{{@fm > cat | grep -o | wc}}");
         let value_pair: Pair = parse(&value_statement, Rule::value);
 
@@ -221,7 +225,7 @@ mod tests {
     #[test_case("@sdfRfrrr", "ewoirjwer")]
     #[test_case("@s", "ewsd{{ @ds > cat | mop }}ei")]
     #[test_case("@sfei", "{{ @ds > cat | mop }}")]
-    fn parsing_var_assignment(var_name: &str, var_value: &str) {
+    fn parse_var_assignment(var_name: &str, var_value: &str) {
         let var_assignment_statement = format!("{} = {}", var_name, var_value);
 
         let var_assignment: Pair = parse(&var_assignment_statement, Rule::var_assignment);
@@ -245,7 +249,7 @@ mod tests {
     #[test_case("asd.txt")]
     #[test_case("weoirj.e39")]
     #[test_case("32.e")]
-    fn parsing_import(desired_fn: &str) {
+    fn parse_import(desired_fn: &str) {
         let import_statement = format!("import \"{}\"", desired_fn);
 
         let import: Pair = parse(&import_statement, Rule::import);
@@ -256,5 +260,10 @@ mod tests {
         } else {
             panic!("No file name was extracted from import statement!");
         }
+    }
+
+    #[test]
+    fn parse_program() {
+        unimplemented!()
     }
 }
