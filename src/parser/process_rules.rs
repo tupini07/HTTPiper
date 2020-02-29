@@ -103,6 +103,18 @@ pub fn parse_variable_assignment(input: Pair) -> e::ProgramStatement {
     }
 }
 
+pub fn parse_request(input: Pair) -> e::RequestDefinition {
+    unimplemented!()
+}
+
+pub fn parse_request_headers(input: Pair) -> Vec<e::SingleHeader> {
+    unimplemented!()
+}
+
+pub fn parse_request_body(input: Pait) -> e::BodyValues {
+    unimplemented!()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -114,12 +126,46 @@ mod tests {
     }
 
     #[test]
-    fn parsing_value_with_only_substitution_and_three_commands() {
+    fn parse_request() {
+        unimplemented!()
+    }
+
+    #[test]
+    fn parse_request_headers() {
+        unimplemented!()
+    }
+
+    #[test]
+    fn parse_request_body() {
+        unimplemented!()
+    }
+
+    #[test]
+    fn parse_value_with_no_substitution() {
+        unimplemented!()
+    }
+
+    #[test]
+    fn parse_value_with_plain_substitution_plain() {
+        unimplemented!()
+    }
+
+    #[test]
+    fn parse_value_with_substitution_no_commands() {
+        unimplemented!()
+    }
+
+    #[test]
+    fn parsing_value_with_substitution_and_three_commands() {
         let value_statement = format!("{}", "{{@fm > cat | grep -o | wc}}");
         let value_pair: Pair = parse(&value_statement, Rule::value);
 
         let processed = parse_value(value_pair);
-        assert_eq!(processed.len(), 1, "There should be exactly one part in this SubstitutionableContent");
+        assert_eq!(
+            processed.len(),
+            1,
+            "There should be exactly one part in this SubstitutionableContent"
+        );
 
         match &processed[0] {
             e::SubstitutionContentParts::Substitution(details) => {
