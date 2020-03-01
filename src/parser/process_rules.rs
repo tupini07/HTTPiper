@@ -2,6 +2,10 @@ use crate::parser::entities as e;
 use crate::parser::*;
 use std::fs;
 
+pub fn load_file(file_path: String) -> e::Program {
+    unimplemented!()
+}
+
 pub fn parse_program(input: Pairs) -> e::Program {
     unimplemented!()
 }
@@ -133,17 +137,17 @@ mod tests {
     }
 
     #[test]
-    fn parse_value_with_no_substitution() {
+    fn parsing_value_with_no_substitution() {
         unimplemented!()
     }
 
     #[test]
-    fn parse_value_with_plain_substitution_plain() {
+    fn parsing_value_with_plain_substitution_plain() {
         unimplemented!()
     }
 
     #[test]
-    fn parse_value_with_substitution_no_commands() {
+    fn parsing_value_with_substitution_no_commands() {
         let value_statement = format!("{}", "{{@varname}}");
         let value_pair: Pair = parse(&value_statement, Rule::value);
 
@@ -174,7 +178,7 @@ mod tests {
     }
 
     #[test]
-    fn parse_value_with_substitution_and_three_commands() {
+    fn parsing_value_with_substitution_and_three_commands() {
         let value_statement = format!("{}", "{{@fm > cat | grep -o | wc}}");
         let value_pair: Pair = parse(&value_statement, Rule::value);
 
@@ -208,24 +212,24 @@ mod tests {
     }
 
     #[test]
-    fn parse_request() {
+    fn parsing_request() {
         unimplemented!()
     }
 
     #[test]
-    fn parse_request_headers() {
+    fn parsing_request_headers() {
         unimplemented!()
     }
 
     #[test]
-    fn parse_request_body() {
+    fn parsing_request_body() {
         unimplemented!()
     }
 
     #[test_case("@sdfRfrrr", "ewoirjwer")]
     #[test_case("@s", "ewsd{{ @ds > cat | mop }}ei")]
     #[test_case("@sfei", "{{ @ds > cat | mop }}")]
-    fn parse_var_assignment(var_name: &str, var_value: &str) {
+    fn parsing_var_assignment(var_name: &str, var_value: &str) {
         let var_assignment_statement = format!("{} = {}", var_name, var_value);
 
         let var_assignment: Pair = parse(&var_assignment_statement, Rule::var_assignment);
@@ -249,7 +253,7 @@ mod tests {
     #[test_case("asd.txt")]
     #[test_case("weoirj.e39")]
     #[test_case("32.e")]
-    fn parse_import(desired_fn: &str) {
+    fn parsing_import(desired_fn: &str) {
         let import_statement = format!("import \"{}\"", desired_fn);
 
         let import: Pair = parse(&import_statement, Rule::import);
@@ -263,7 +267,12 @@ mod tests {
     }
 
     #[test]
-    fn parse_program() {
+    fn parsing_program() {
+        unimplemented!()
+    }
+
+    #[test]
+    fn loading_file() {
         unimplemented!()
     }
 }
