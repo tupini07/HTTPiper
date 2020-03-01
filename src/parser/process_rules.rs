@@ -212,6 +212,73 @@ mod tests {
     }
 
     #[test]
+    fn parsing_value_with_substitution_interleaved_plain_no_commands() {
+        let value_statement = format!(
+            "{}",
+            "some text in value {{@ravarname > some -command sd | other-command -ot-}} more stuff {{@othervar}} some more"
+        );
+        let value_pair: Pair = parse(&value_statement, Rule::value);
+
+        let processed = parse_value(value_pair);
+        assert_eq!(
+            processed.len(),
+            5,
+            "There should be exactly five parts in this SubstitutionableContent"
+        );
+
+        use e::SubstitutionContentParts::*;
+        match &processed[0] {
+            Substitution(_) => panic!("This element should actually be a NoSubstituion!"),
+            NoSobstitution(text) => assert_eq!(text.clone(), "some text in value".to_string()),
+        };
+
+        match &processed[1] {
+            Substitution(details) => {
+                assert_eq!(
+                    details.root,
+                    SubstitutionRoot::VariableReference("@ravarname".to_string())
+                );
+
+                assert_eq!(
+                    details.commands.len(),
+                    2,
+                    "Expected example to have two commands"
+                );
+
+                assert_eq!(details.commands[0], "some -command sd".to_string());
+                assert_eq!(details.commands[1], "other-command -ot-".to_string());
+            }
+            NoSobstitution(_) => panic!("This should actually be a substitution!"),
+        };
+
+        match &processed[2] {
+            Substitution(_) => panic!("This element should actually be a NoSubstituion!"),
+            NoSobstitution(text) => assert_eq!(text.clone(), "more stuff".to_string()),
+        };
+
+        match &processed[3] {
+            Substitution(details) => {
+                assert_eq!(
+                    details.root,
+                    SubstitutionRoot::VariableReference("@othervar".to_string())
+                );
+
+                assert_eq!(
+                    details.commands.len(),
+                    0,
+                    "Expected example to have zero commands"
+                );
+            }
+            NoSobstitution(_) => panic!("This should actually be a substitution!"),
+        };
+
+        match &processed[4] {
+            Substitution(_) => panic!("This element should actually be a NoSubstituion!"),
+            NoSobstitution(text) => assert_eq!(text.clone(), "some more".to_string()),
+        };
+    }
+
+    #[test]
     fn parsing_request() {
         unimplemented!()
     }
