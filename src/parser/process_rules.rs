@@ -138,12 +138,24 @@ mod tests {
 
     #[test]
     fn parsing_value_with_no_substitution() {
-        unimplemented!()
-    }
+        let value_statement = format!(
+            "{}",
+            "example value with no-substituion |/ 0-!@#- chars"
+        );
+        let value_pair: Pair = parse(&value_statement, Rule::value);
 
-    #[test]
-    fn parsing_value_with_plain_substitution_plain() {
-        unimplemented!()
+        let processed = parse_value(value_pair);
+        assert_eq!(
+            processed.len(),
+            1,
+            "There should be exactly one part in this SubstitutionableContent"
+        );
+
+        use e::SubstitutionContentParts::*;
+        match &processed[0] {
+            Substitution(_) => panic!("This element should actually be a NoSubstituion!"),
+            NoSobstitution(text) => assert_eq!(text.clone(), "example value with no-substituion |/ 0-!@#- chars".to_string()),
+        };
     }
 
     #[test]
@@ -212,7 +224,7 @@ mod tests {
     }
 
     #[test]
-    fn parsing_value_with_substitution_interleaved_plain_no_commands() {
+    fn parsing_value_with_substitution_interleaved_plain() {
         let value_statement = format!(
             "{}",
             "some text in value {{@ravarname > some -command sd | other-command -ot-}} more stuff {{@othervar}} some more"
