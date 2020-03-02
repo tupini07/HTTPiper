@@ -138,10 +138,7 @@ mod tests {
 
     #[test]
     fn parsing_value_with_no_substitution() {
-        let value_statement = format!(
-            "{}",
-            "example value with no-substituion |/ 0-!@#- chars"
-        );
+        let value_statement = format!("{}", "example value with no-substituion |/ 0-!@#- chars");
         let value_pair: Pair = parse(&value_statement, Rule::value);
 
         let processed = parse_value(value_pair);
@@ -154,7 +151,10 @@ mod tests {
         use e::SubstitutionContentParts::*;
         match &processed[0] {
             Substitution(_) => panic!("This element should actually be a NoSubstituion!"),
-            NoSobstitution(text) => assert_eq!(text.clone(), "example value with no-substituion |/ 0-!@#- chars".to_string()),
+            NoSobstitution(text) => assert_eq!(
+                text.clone(),
+                "example value with no-substituion / 0-!@#- chars".to_string()
+            ),
         };
     }
 
