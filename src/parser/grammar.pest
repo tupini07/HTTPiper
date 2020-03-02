@@ -26,7 +26,7 @@ value = {substitutable_value+}
 url = {substitutable_value}
 requestId = _{"[" ~ request_id ~ "]"}
 
-text = { (ASCII_ALPHA | ASCII_DIGIT | " " | "?" | "&" | "=" | "/" | "-" | ":" | "#" | "@" | "!" | "|")+ }
+text = { (ASCII_ALPHA | ASCII_DIGIT | " " | "?" | "&" | "=" | "/" | "-" | "_" | ":" | "#" | "@" | "!" | "|")+ }
 
 method = {"GET" | "POST" | "PATCH"}
 
