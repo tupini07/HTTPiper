@@ -153,7 +153,7 @@ mod tests {
             Substitution(_) => panic!("This element should actually be a NoSubstituion!"),
             NoSobstitution(text) => assert_eq!(
                 text.clone(),
-                "example value with no-substituion / 0-!@#- chars".to_string()
+                "example value with no-substituion |/ 0-!@#- chars".to_string()
             ),
         };
     }
