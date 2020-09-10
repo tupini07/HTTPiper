@@ -23,7 +23,6 @@ pub fn parse_file<'b>(file_name: &str) -> Result<(), Error<Rule>> {
     let mut program: Pair = HttppParser::parse(Rule::program, &unparsed_file)?
         .next()
         .unwrap();
-
     // println!(
     //     "{:?}",
     //     program.into_inner().map(|p: Pair| match p.as_rule() {

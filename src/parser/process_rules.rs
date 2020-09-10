@@ -36,12 +36,12 @@ pub fn parse_reqAttribute(input: Pair) -> e::SubstitutionRoot {
 
     e::SubstitutionRoot::RequestReference {
         name: request_name,
-        req_resp: if req_resp == "Request" {
+        req_resp: if req_resp == "Request".to_string() {
             e::RequestResponse::Request
         } else {
             e::RequestResponse::Response
         },
-        part: if req_part == "Body" {
+        part: if req_part == "Body".to_string() {
             e::RequestParts::Body
         } else {
             e::RequestParts::Headers
@@ -118,6 +118,15 @@ pub fn parse_request(input: Pair) -> e::RequestDefinition {
 
 pub fn parse_request_headers(input: Pair) -> Vec<e::SingleHeader> {
     debug_assert_eq!(input.as_rule(), Rule::headers);
+
+    let single_headers = input.into_inner();
+    dbg!(&single_headers);
+
+    single_headers.map(|h| {
+        let header_inner = h.into_inner();
+        // TODO conver
+    });
+
     unimplemented!()
 }
 
@@ -297,7 +306,14 @@ mod tests {
 
     #[test]
     fn parsing_request_headers() {
-        unimplemented!()
+        // TODO Doing this
+        // unimplemented!();
+
+        let value_statement = format!("{}", "header1: header plain_text_Value for header 1 \nheader2: sub vale for header 2 {{@somevar > wc -l}} etc");
+        let value_pair: Pair = parse(&value_statement, Rule::headers);
+
+        let parsed = parse_request_headers(value_pair);
+        dbg!(&parsed);
     }
 
     #[test]
